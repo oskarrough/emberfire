@@ -818,9 +818,11 @@ export default DS.Adapter.extend(Waitable, {
    * _updateHasManyCacheForType
    */
   _updateRecordCacheForType(typeClass, payload, store) {
+    if (store.isDestroying || store.isDestroyed) { return; }
     if (!payload) { return; }
     const id = payload.id;
-    const cache = this._getRecordCache(typeClass, id);
+    const cache = this._getRecordCache(typeClass, id);	
+    
     const serializer = store.serializerFor(typeClass.modelName);
     // Only cache relationships for now
     // and do the same for embedded records
